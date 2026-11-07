@@ -8,5 +8,6 @@
 /package-lock.json  export-ignore
 /phpunit.xml.dist   export-ignore
 /composer.lock      export-ignore
+/CHANGELOG.md       export-ignore
 /README.md          export-ignore
 
