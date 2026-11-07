@@ -1,0 +1,33 @@
+{
+    "name": "vinny/darkmodetoggle",
+    "type": "phpbb-extension",
+    "description": "Adds a theme switcher that lets users and guests toggle between light and dark modes",
+    "homepage": "https://github.com/vinny/darkmodetoggle",
+    "version": "1.0.0",
+    "keywords": [
+        "phpbb",
+        "extension",
+        "darkmode",
+        "theme",
+        "style"
+    ],
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "_Vinny_",
+            "homepage": "https://github.com/vinny",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "composer/installers": "^1.0 || ^2.0",
+        "phpbb/phpbb": ">=4.0.0-a1"
+    },
+    "extra": {
+        "display-name": "Dark Mode Toggle",
+        "soft-require": {
+            "phpbb/phpbb": ">=4.0.0-a1"
+        }
+    }
+}

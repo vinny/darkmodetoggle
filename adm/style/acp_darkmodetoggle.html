@@ -1,0 +1,51 @@
+{% INCLUDE 'overall_header.html' %}
+
+<a id="maincontent"></a>
+
+<h1>{{ lang('ACP_DARKMODETOGGLE_TITLE') }}</h1>
+<p>{{ lang('ACP_DARKMODETOGGLE_EXPLAIN') }}</p>
+
+<form id="acp_darkmodetoggle" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend>{{ lang('ACP_DARKMODETOGGLE_SETTINGS') }}</legend>
+		<dl>
+			<dt><label for="darkmodetoggle_enable">{{ lang('ACP_DARKMODETOGGLE_ENABLE') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_DARKMODETOGGLE_ENABLE_EXPLAIN') }}</span></dt>
+			<dd>
+				<label><input type="radio" class="radio" id="darkmodetoggle_enable" name="darkmodetoggle_enable" value="1"{% if DARKMODETOGGLE_ENABLE %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="darkmodetoggle_enable" value="0"{% if not DARKMODETOGGLE_ENABLE %} checked="checked"{% endif %}> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="darkmodetoggle_appearance">{{ lang('ACP_DARKMODETOGGLE_APPEARANCE') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_DARKMODETOGGLE_APPEARANCE_EXPLAIN') }}</span></dt>
+			<dd>
+				<label><input type="radio" class="radio" id="darkmodetoggle_appearance" name="darkmodetoggle_appearance" value="toggle"{% if DARKMODETOGGLE_APPEARANCE == 'toggle' %} checked="checked"{% endif %}> {{ lang('ACP_DARKMODETOGGLE_APPEARANCE_TOGGLE') }}</label>
+				<label><input type="radio" class="radio" name="darkmodetoggle_appearance" value="slider"{% if DARKMODETOGGLE_APPEARANCE == 'slider' %} checked="checked"{% endif %}> {{ lang('ACP_DARKMODETOGGLE_APPEARANCE_SLIDER') }}</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="darkmodetoggle_position">{{ lang('ACP_DARKMODETOGGLE_POSITION') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_DARKMODETOGGLE_POSITION_EXPLAIN') }}</span></dt>
+			<dd>
+				<select id="darkmodetoggle_position" name="darkmodetoggle_position">
+					<option value="breadcrumbs"{% if DARKMODETOGGLE_POSITION == 'breadcrumbs' %} selected="selected"{% endif %}>{{ lang('ACP_DARKMODETOGGLE_POS_BREADCRUMBS') }}</option>
+					<option value="navbar"{% if DARKMODETOGGLE_POSITION == 'navbar' %} selected="selected"{% endif %}>{{ lang('ACP_DARKMODETOGGLE_POS_NAVBAR') }}</option>
+					<option value="footer"{% if DARKMODETOGGLE_POSITION == 'footer' %} selected="selected"{% endif %}>{{ lang('ACP_DARKMODETOGGLE_POS_FOOTER') }}</option>
+				</select>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="darkmodetoggle_show_labels">{{ lang('ACP_DARKMODETOGGLE_SHOW_LABELS') ~ lang('COLON') }}</label><br><span>{{ lang('ACP_DARKMODETOGGLE_SHOW_LABELS_EXPLAIN') }}</span></dt>
+			<dd>
+				<label><input type="radio" class="radio" id="darkmodetoggle_show_labels" name="darkmodetoggle_show_labels" value="1"{% if DARKMODETOGGLE_SHOW_LABELS %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="darkmodetoggle_show_labels" value="0"{% if not DARKMODETOGGLE_SHOW_LABELS %} checked="checked"{% endif %}> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}">
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+{% INCLUDE 'overall_footer.html' %}

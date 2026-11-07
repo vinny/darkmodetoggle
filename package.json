@@ -1,0 +1,15 @@
+{
+  "name": "vinny-darkmodetoggle",
+  "version": "1.0.0",
+  "description": "Dark Mode Toggle for phpBB 4 - CSS Linting",
+  "private": true,
+  "scripts": {
+    "test": "npm run lint:css",
+    "lint:css": "npx --no-install stylelint \"styles/**/*.css\""
+  },
+  "devDependencies": {
+    "stylelint": "^16.0.0",
+    "stylelint-config-standard": "^36.0.0"
+  }
+}
+

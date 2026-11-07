@@ -1,0 +1,210 @@
+/* Dark Mode Toggle component styling for phpBB 4 */
+.c-dark-mode-toggle-item {
+	display: inline-flex;
+	align-items: center;
+}
+
+dark-mode-toggle.c-dark-mode-toggle {
+	--dark-mode-toggle-icon-size: 1.15rem;
+	--dark-mode-toggle-color: inherit;
+	--dark-mode-toggle-background-color: transparent;
+	--dark-mode-toggle-icon-filter: invert(100%);
+
+	display: inline-flex;
+	align-items: center;
+	vertical-align: middle;
+	line-height: 1;
+}
+
+dark-mode-toggle.c-dark-mode-toggle::part(form) {
+	display: inline-flex;
+	align-items: center;
+}
+
+dark-mode-toggle.c-dark-mode-toggle::part(fieldset) {
+	display: inline-flex;
+	align-items: center;
+	padding: 0;
+	padding-block: 0;
+	padding-inline: 0;
+	margin: 0;
+	border: 0;
+}
+
+dark-mode-toggle.c-dark-mode-toggle::part(aside) {
+	display: none;
+}
+
+dark-mode-toggle.c-dark-mode-toggle::part(legend) {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* Toggle mode (matching prosilver phpBB 4 link & o-icon appearance) */
+dark-mode-toggle.c-dark-mode-toggle:not(.slider) {
+	--dark-mode-toggle-icon-size: 1rem;
+	--dark-mode-toggle-icon-filter: none;
+
+	height: calc(var(--ps-line-height, 1.5rem) * 1.25);
+	line-height: calc(var(--ps-line-height, 1.5rem) * 1.25);
+	margin-top: -1px;
+	color: #0f4d8a;
+	font-size: var(--ps-font-small, 0.875rem);
+}
+
+dark-mode-toggle.c-dark-mode-toggle:not(.slider):hover,
+dark-mode-toggle.c-dark-mode-toggle:not(.slider):focus {
+	color: #d41142;
+}
+
+dark-mode-toggle.c-dark-mode-toggle:not(.slider)[mode='dark'] {
+	color: #60a5fa;
+}
+
+dark-mode-toggle.c-dark-mode-toggle:not(.slider)[mode='dark']:hover,
+dark-mode-toggle.c-dark-mode-toggle:not(.slider)[mode='dark']:focus {
+	color: #f43f5e;
+}
+
+.nav-breadcrumbs dark-mode-toggle.c-dark-mode-toggle:not(.slider) {
+	font-weight: bold;
+}
+
+.headerbar dark-mode-toggle.c-dark-mode-toggle:not(.slider),
+.headerbar dark-mode-toggle.c-dark-mode-toggle:not(.slider):hover,
+.headerbar dark-mode-toggle.c-dark-mode-toggle:not(.slider):focus {
+	color: #eaf8ff;
+}
+
+.headerbar dark-mode-toggle.c-dark-mode-toggle:not(.slider)[mode='dark'] {
+	color: #e2e8f0;
+}
+
+.headerbar dark-mode-toggle.c-dark-mode-toggle:not(.slider)[mode='dark']:hover,
+.headerbar dark-mode-toggle.c-dark-mode-toggle:not(.slider)[mode='dark']:focus {
+	color: #ffffff;
+}
+
+dark-mode-toggle.c-dark-mode-toggle:not(.slider)::part(toggleLabel) {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	line-height: inherit;
+}
+
+dark-mode-toggle.c-dark-mode-toggle:not(.slider)::part(toggleLabel):not(:empty):hover,
+dark-mode-toggle.c-dark-mode-toggle:not(.slider)::part(toggleLabel):not(:empty):focus {
+	text-decoration: underline;
+}
+
+dark-mode-toggle.c-dark-mode-toggle:not(.slider)::part(toggleLabel):not(:empty)::before {
+	margin-inline-end: 4px;
+}
+
+dark-mode-toggle.c-dark-mode-toggle:not(.slider)::part(toggleLabel)::before {
+	background-image: none;
+	background-color: currentcolor;
+	-webkit-mask-image: url('./images/moon.svg');
+	mask-image: url('./images/moon.svg');
+	-webkit-mask-position: center;
+	mask-position: center;
+	-webkit-mask-size: contain;
+	mask-size: contain;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	filter: none;
+}
+
+dark-mode-toggle.c-dark-mode-toggle:not(.slider)[mode='dark']::part(toggleLabel)::before {
+	background-image: none;
+	background-color: currentcolor;
+	-webkit-mask-image: url('./images/sun.svg');
+	mask-image: url('./images/sun.svg');
+	-webkit-mask-position: center 55%;
+	mask-position: center 55%;
+	-webkit-mask-size: 115%;
+	mask-size: 115%;
+	filter: none;
+}
+
+/* Slider mode (matching slider.css / #dark-mode-toggle-5 in demo) */
+dark-mode-toggle.c-dark-mode-toggle.slider::part(toggleLabel) {
+	display: inline-block;
+	position: relative;
+	height: 1.7rem;
+	width: 2.975rem;
+	background-color: #b7bbbd;
+	border-radius: 0.85rem;
+	transition: 0.4s;
+	vertical-align: middle;
+}
+
+dark-mode-toggle.c-dark-mode-toggle.slider[mode='dark']::part(toggleLabel) {
+	background-color: #4e5255;
+}
+
+dark-mode-toggle.c-dark-mode-toggle.slider::part(toggleLabel)::before {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	top: 0.2125rem;
+	left: 0.2125rem;
+	height: 1.275rem;
+	width: 1.275rem;
+	border-radius: 100%;
+	background-color: #ffffff;
+	color: #333333;
+	transition: 0.4s;
+	content: '';
+	background-position: center;
+	background-size: 0.85rem;
+	background-image: url('./images/sun.svg');
+	background-repeat: no-repeat;
+	box-sizing: border-box;
+	margin-inline-end: 0;
+}
+
+dark-mode-toggle.c-dark-mode-toggle.slider[mode='dark']::part(toggleLabel)::before {
+	left: calc(100% - 1.4875rem);
+	border-color: #000000;
+	background-color: #cccccc;
+	color: #000000;
+	background-size: 0.85rem;
+	background-image: url('./images/moon.svg');
+	filter: invert(100%);
+}
+
+dark-mode-toggle.c-dark-mode-toggle.slider::part(toggleLabel)::after {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	top: 0.2125rem;
+	left: calc(100% - 1.4875rem);
+	height: 1.275rem;
+	width: 1.275rem;
+	border-radius: 100%;
+	color: #333333;
+	content: '';
+	background-position: center;
+	background-size: 0.85rem;
+	background-image: url('./images/moon.svg');
+	background-repeat: no-repeat;
+	box-sizing: border-box;
+	opacity: 0.5;
+}
+
+dark-mode-toggle.c-dark-mode-toggle.slider[mode='dark']::part(toggleLabel)::after {
+	left: 0.2125rem;
+	background-image: url('./images/sun.svg');
+	filter: invert(100%);
+}

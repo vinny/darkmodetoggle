@@ -1,0 +1,44 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+      - dev/*
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+      - dev/*
+
+permissions:
+  contents: read
+
+jobs:
+  call-tests:
+    name: Extension tests (phpBB 4)
+    uses: phpbb-extensions/test-framework/.github/workflows/tests.yml@master
+    with:
+      EXTNAME: vinny/darkmodetoggle
+
+  css-lint:
+    name: Frontend CSS Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run CSS Linter
+        run: npm run lint:css
+

@@ -1,0 +1,8 @@
+services:
+    vinny.darkmodetoggle.listener:
+        class: vinny\darkmodetoggle\event\listener
+        arguments:
+            - '@config'
+            - '@template'
+        tags:
+            - { name: event.listener }

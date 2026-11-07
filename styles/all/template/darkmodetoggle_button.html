@@ -1,0 +1,11 @@
+<dark-mode-toggle
+	class="c-dark-mode-toggle{% if DARKMODETOGGLE_APPEARANCE == 'slider' %} slider{% endif %}"
+	appearance="toggle"
+	legend="{{ lang('DARKMODETOGGLE_LEGEND')|e('html_attr') }}"
+	title="{{ lang('DARKMODETOGGLE_LEGEND')|e('html_attr') }}"
+	{% if S_DARKMODETOGGLE_SHOW_LABELS and DARKMODETOGGLE_APPEARANCE != 'slider' %}
+		light="{{ lang('DARKMODETOGGLE_LIGHT')|e('html_attr') }}"
+		dark="{{ lang('DARKMODETOGGLE_DARK')|e('html_attr') }}"
+	{% endif %}
+	permanent
+></dark-mode-toggle>
