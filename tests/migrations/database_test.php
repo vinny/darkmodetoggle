@@ -40,7 +40,8 @@ class database_test extends \phpbb_test_case
 			$this->db_tools,
 			'./',
 			'php',
-			'phpbb_'
+			'phpbb_',
+			[]
 		);
 	}
 
