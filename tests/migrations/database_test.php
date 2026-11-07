@@ -10,55 +10,77 @@
 
 namespace vinny\darkmodetoggle\tests\migrations;
 
-class database_test extends \phpbb_database_test_case
+use vinny\darkmodetoggle\migrations\v100\install_darkmodetoggle;
+
+class database_test extends \phpbb_test_case
 {
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var \phpbb\config\config */
+	protected $config;
+
+	/** @var \phpbb\db\driver\driver_interface|\PHPUnit\Framework\MockObject\MockObject */
 	protected $db;
 
-	protected static function setup_extensions()
-	{
-		return ['vinny/darkmodetoggle'];
-	}
-
-	public function getDataSet()
-	{
-		return $this->createXMLDataSet(__DIR__ . '/fixtures/config.xml');
-	}
+	/** @var \phpbb\db\tools\tools_interface|\PHPUnit\Framework\MockObject\MockObject */
+	protected $db_tools;
 
 	public function setUp(): void
 	{
 		parent::setUp();
 
-		$this->db = $this->new_dbal();
+		$this->config = new \phpbb\config\config([]);
+		$this->db = $this->createMock(\phpbb\db\driver\driver_interface::class);
+		$this->db_tools = $this->createMock(\phpbb\db\tools\tools_interface::class);
 	}
 
-	public function test_default_configs_installed()
+	protected function get_migration(): install_darkmodetoggle
 	{
-		$sql = 'SELECT config_name, config_value
-			FROM ' . CONFIG_TABLE . "
-			WHERE config_name LIKE 'darkmodetoggle_%'";
-		$result = $this->db->sql_query($sql);
+		return new install_darkmodetoggle(
+			$this->config,
+			$this->db,
+			$this->db_tools,
+			'./',
+			'php',
+			'phpbb_'
+		);
+	}
+
+	public function test_depends_on()
+	{
+		$this->assertSame(
+			['\phpbb\db\migration\data\v400\v400a1'],
+			install_darkmodetoggle::depends_on()
+		);
+	}
+
+	public function test_effectively_installed()
+	{
+		$migration = $this->get_migration();
+		$this->assertFalse($migration->effectively_installed());
+
+		$this->config['darkmodetoggle_enable'] = 1;
+		$this->assertTrue($migration->effectively_installed());
+	}
+
+	public function test_update_data()
+	{
+		$migration = $this->get_migration();
+		$data = $migration->update_data();
+
+		$this->assertIsArray($data);
 
 		$configs = [];
-		while ($row = $this->db->sql_fetchrow($result))
+		foreach ($data as $entry)
 		{
-			$configs[$row['config_name']] = $row['config_value'];
+			if ($entry[0] === 'config.add')
+			{
+				$configs[$entry[1][0]] = $entry[1][1];
+			}
 		}
-		$this->db->sql_freeresult($result);
 
-		$this->assertArrayHasKey('darkmodetoggle_enable', $configs);
-		$this->assertSame('1', (string) $configs['darkmodetoggle_enable']);
-
-		$this->assertArrayHasKey('darkmodetoggle_appearance', $configs);
+		$this->assertSame(1, $configs['darkmodetoggle_enable']);
 		$this->assertSame('toggle', $configs['darkmodetoggle_appearance']);
-
-		$this->assertArrayHasKey('darkmodetoggle_position', $configs);
 		$this->assertSame('breadcrumbs', $configs['darkmodetoggle_position']);
-
-		$this->assertArrayHasKey('darkmodetoggle_show_labels', $configs);
-		$this->assertSame('0', (string) $configs['darkmodetoggle_show_labels']);
-
+		$this->assertSame(0, $configs['darkmodetoggle_show_labels']);
 		$this->assertArrayNotHasKey('darkmodetoggle_version', $configs);
 	}
 }
-
