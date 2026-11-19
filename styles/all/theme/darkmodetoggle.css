@@ -143,7 +143,7 @@ dark-mode-toggle.c-dark-mode-toggle.slider::part(toggleLabel) {
 	width: 2.975rem;
 	background-color: #b7bbbd;
 	border-radius: 0.85rem;
-	transition: 0.4s;
+	transition: background-color 0.4s;
 	vertical-align: middle;
 }
 
@@ -163,7 +163,7 @@ dark-mode-toggle.c-dark-mode-toggle.slider::part(toggleLabel)::before {
 	border-radius: 100%;
 	background-color: #ffffff;
 	color: #333333;
-	transition: 0.4s;
+	transition: left 0.4s, background-color 0.4s;
 	content: '';
 	background-position: center;
 	background-size: 0.85rem;
@@ -207,4 +207,11 @@ dark-mode-toggle.c-dark-mode-toggle.slider[mode='dark']::part(toggleLabel)::afte
 	left: 0.2125rem;
 	background-image: url('./images/sun.svg');
 	filter: invert(100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	dark-mode-toggle.c-dark-mode-toggle.slider::part(toggleLabel),
+	dark-mode-toggle.c-dark-mode-toggle.slider::part(toggleLabel)::before {
+		transition: none;
+	}
 }

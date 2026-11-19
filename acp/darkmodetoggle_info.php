@@ -12,7 +12,7 @@ namespace vinny\darkmodetoggle\acp;
 
 class darkmodetoggle_info
 {
-	public function module()
+	public function module(): array
 	{
 		return [
 			'filename'	=> '\vinny\darkmodetoggle\acp\darkmodetoggle_module',

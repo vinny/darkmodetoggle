@@ -4,8 +4,11 @@
 	legend="{{ lang('DARKMODETOGGLE_LEGEND')|e('html_attr') }}"
 	title="{{ lang('DARKMODETOGGLE_LEGEND')|e('html_attr') }}"
 	{% if S_DARKMODETOGGLE_SHOW_LABELS and DARKMODETOGGLE_APPEARANCE != 'slider' %}
-		light="{{ lang('DARKMODETOGGLE_LIGHT')|e('html_attr') }}"
-		dark="{{ lang('DARKMODETOGGLE_DARK')|e('html_attr') }}"
+		light="{{ lang('DARKMODETOGGLE_DARK')|e('html_attr') }}"
+		dark="{{ lang('DARKMODETOGGLE_LIGHT')|e('html_attr') }}"
+	{% else %}
+		data-label-light="{{ lang('DARKMODETOGGLE_LIGHT')|e('html_attr') }}"
+		data-label-dark="{{ lang('DARKMODETOGGLE_DARK')|e('html_attr') }}"
 	{% endif %}
 	permanent
 ></dark-mode-toggle>

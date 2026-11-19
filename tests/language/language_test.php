@@ -37,36 +37,40 @@ class language_test extends \phpbb_test_case
 		$en_common = $this->load_language_file('en', 'common.php');
 		$this->assertNotEmpty($en_common);
 
-		$en_acp = $this->load_language_file('en', 'info_acp_darkmodetoggle.php');
+		$en_info_acp = $this->load_language_file('en', 'info_acp_darkmodetoggle.php');
+		$this->assertNotEmpty($en_info_acp);
+
+		$en_acp = $this->load_language_file('en', 'acp_darkmodetoggle.php');
 		$this->assertNotEmpty($en_acp);
 	}
 
 	public function test_translations_coverage()
 	{
-		$en_common = $this->load_language_file('en', 'common.php');
-		$pt_common = $this->load_language_file('pt_br', 'common.php');
+		$files = [
+			'common.php',
+			'info_acp_darkmodetoggle.php',
+			'acp_darkmodetoggle.php',
+		];
 
-		$this->assertSame(
-			array_keys($en_common),
-			array_keys($pt_common),
-			'Asserting that pt_br/common.php has the exact same language keys as en/common.php'
-		);
+		foreach ($files as $file)
+		{
+			$en = $this->load_language_file('en', $file);
+			$pt = $this->load_language_file('pt_br', $file);
 
-		$en_acp = $this->load_language_file('en', 'info_acp_darkmodetoggle.php');
-		$pt_acp = $this->load_language_file('pt_br', 'info_acp_darkmodetoggle.php');
-
-		$this->assertSame(
-			array_keys($en_acp),
-			array_keys($pt_acp),
-			'Asserting that pt_br/info_acp_darkmodetoggle.php has the exact same language keys as en/info_acp_darkmodetoggle.php'
-		);
+			$this->assertSame(
+				array_keys($en),
+				array_keys($pt),
+				sprintf('Asserting that pt_br/%1$s has the exact same language keys as en/%1$s', $file)
+			);
+		}
 	}
 
 	public function test_all_declared_keys_are_used_in_codebase()
 	{
 		$en_common = $this->load_language_file('en', 'common.php');
-		$en_acp = $this->load_language_file('en', 'info_acp_darkmodetoggle.php');
-		$declared_keys = array_merge(array_keys($en_common), array_keys($en_acp));
+		$en_info_acp = $this->load_language_file('en', 'info_acp_darkmodetoggle.php');
+		$en_acp = $this->load_language_file('en', 'acp_darkmodetoggle.php');
+		$declared_keys = array_merge(array_keys($en_common), array_keys($en_info_acp), array_keys($en_acp));
 
 		$files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->ext_dir));
 		$codebase_text = '';
@@ -103,4 +107,3 @@ class language_test extends \phpbb_test_case
 		);
 	}
 }
-

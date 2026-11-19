@@ -12,17 +12,17 @@ namespace vinny\darkmodetoggle\migrations\v100;
 
 class install_darkmodetoggle extends \phpbb\db\migration\migration
 {
-	public function effectively_installed()
+	public function effectively_installed(): bool
 	{
 		return isset($this->config['darkmodetoggle_enable']);
 	}
 
-	public static function depends_on()
+	public static function depends_on(): array
 	{
 		return ['\phpbb\db\migration\data\v400\v400a1'];
 	}
 
-	public function update_data()
+	public function update_data(): array
 	{
 		return [
 			['config.add', ['darkmodetoggle_enable', 1]],

@@ -17,11 +17,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 */
 class listener implements EventSubscriberInterface
 {
-	/** @var \phpbb\config\config */
-	protected $config;
-
-	/** @var \phpbb\template\template */
-	protected $template;
+	public const ALLOWED_APPEARANCES = ['toggle', 'slider'];
+	public const ALLOWED_POSITIONS = ['breadcrumbs', 'navbar', 'footer'];
 
 	/**
 	* Constructor
@@ -29,10 +26,11 @@ class listener implements EventSubscriberInterface
 	* @param \phpbb\config\config     $config   Config object
 	* @param \phpbb\template\template $template Template object
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\template\template $template)
+	public function __construct(
+		protected \phpbb\config\config $config,
+		protected \phpbb\template\template $template
+	)
 	{
-		$this->config = $config;
-		$this->template = $template;
 	}
 
 	/**
@@ -40,7 +38,7 @@ class listener implements EventSubscriberInterface
 	*
 	* @return array
 	*/
-	public static function getSubscribedEvents()
+	public static function getSubscribedEvents(): array
 	{
 		return [
 			'core.user_setup'	=> 'load_language_on_setup',
@@ -49,13 +47,40 @@ class listener implements EventSubscriberInterface
 	}
 
 	/**
+	* Sanitize button appearance value
+	*
+	* @param string $appearance Raw appearance value
+	* @return string
+	*/
+	public static function sanitize_appearance(string $appearance): string
+	{
+		return in_array($appearance, self::ALLOWED_APPEARANCES, true) ? $appearance : 'toggle';
+	}
+
+	/**
+	* Sanitize button position value
+	*
+	* @param string $position Raw position value
+	* @return string
+	*/
+	public static function sanitize_position(string $position): string
+	{
+		return in_array($position, self::ALLOWED_POSITIONS, true) ? $position : 'breadcrumbs';
+	}
+
+	/**
 	* Load common language file during user setup
 	*
 	* @param \phpbb\event\data $event The event object
 	* @return void
 	*/
-	public function load_language_on_setup($event)
+	public function load_language_on_setup($event): void
 	{
+		if (empty($this->config['darkmodetoggle_enable']))
+		{
+			return;
+		}
+
 		$lang_set_ext = $event['lang_set_ext'];
 		$lang_set_ext[] = [
 			'ext_name' => 'vinny/darkmodetoggle',
@@ -69,23 +94,21 @@ class listener implements EventSubscriberInterface
 	*
 	* @return void
 	*/
-	public function add_page_header_vars()
+	public function add_page_header_vars(): void
 	{
-		$enabled = !empty($this->config['darkmodetoggle_enable']);
-		$appearance = $this->config['darkmodetoggle_appearance'] ?? 'toggle';
-		if (!in_array($appearance, ['toggle', 'slider'], true))
+		if (empty($this->config['darkmodetoggle_enable']))
 		{
-			$appearance = 'toggle';
+			$this->template->assign_vars([
+				'S_DARKMODETOGGLE_ENABLED' => false,
+			]);
+			return;
 		}
 
-		$position = $this->config['darkmodetoggle_position'] ?? 'breadcrumbs';
-		if (!in_array($position, ['breadcrumbs', 'navbar', 'footer'], true))
-		{
-			$position = 'breadcrumbs';
-		}
+		$appearance = self::sanitize_appearance((string) ($this->config['darkmodetoggle_appearance'] ?? 'toggle'));
+		$position = self::sanitize_position((string) ($this->config['darkmodetoggle_position'] ?? 'breadcrumbs'));
 
 		$this->template->assign_vars([
-			'S_DARKMODETOGGLE_ENABLED'			=> $enabled,
+			'S_DARKMODETOGGLE_ENABLED'			=> true,
 			'DARKMODETOGGLE_APPEARANCE'			=> $appearance,
 			'DARKMODETOGGLE_POSITION'			=> $position,
 			'S_DARKMODETOGGLE_POS_BREADCRUMBS'	=> $position === 'breadcrumbs',

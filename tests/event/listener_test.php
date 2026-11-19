@@ -55,7 +55,7 @@ class listener_test extends \phpbb_test_case
 		$this->assertSame('add_page_header_vars', $events['core.page_header']);
 	}
 
-	public function test_load_language_on_setup()
+	public function test_load_language_on_setup_when_enabled()
 	{
 		$listener = $this->get_listener();
 		$event = new \ArrayObject([
@@ -67,6 +67,19 @@ class listener_test extends \phpbb_test_case
 		$this->assertCount(1, $event['lang_set_ext']);
 		$this->assertSame('vinny/darkmodetoggle', $event['lang_set_ext'][0]['ext_name']);
 		$this->assertSame('common', $event['lang_set_ext'][0]['lang_set']);
+	}
+
+	public function test_load_language_on_setup_when_disabled()
+	{
+		$this->config['darkmodetoggle_enable'] = 0;
+		$listener = $this->get_listener();
+		$event = new \ArrayObject([
+			'lang_set_ext' => [],
+		]);
+
+		$listener->load_language_on_setup($event);
+
+		$this->assertCount(0, $event['lang_set_ext']);
 	}
 
 	public function test_add_page_header_vars_defaults()
@@ -110,9 +123,9 @@ class listener_test extends \phpbb_test_case
 		$listener->add_page_header_vars();
 	}
 
-	public function test_add_page_header_vars_footer_and_disabled()
+	public function test_add_page_header_vars_footer()
 	{
-		$this->config['darkmodetoggle_enable'] = 0;
+		$this->config['darkmodetoggle_enable'] = 1;
 		$this->config['darkmodetoggle_appearance'] = 'toggle';
 		$this->config['darkmodetoggle_position'] = 'footer';
 		$this->config['darkmodetoggle_show_labels'] = 0;
@@ -120,13 +133,27 @@ class listener_test extends \phpbb_test_case
 		$this->template->expects($this->once())
 			->method('assign_vars')
 			->with([
-				'S_DARKMODETOGGLE_ENABLED'			=> false,
+				'S_DARKMODETOGGLE_ENABLED'			=> true,
 				'DARKMODETOGGLE_APPEARANCE'			=> 'toggle',
 				'DARKMODETOGGLE_POSITION'			=> 'footer',
 				'S_DARKMODETOGGLE_POS_BREADCRUMBS'	=> false,
 				'S_DARKMODETOGGLE_POS_NAVBAR'		=> false,
 				'S_DARKMODETOGGLE_POS_FOOTER'		=> true,
 				'S_DARKMODETOGGLE_SHOW_LABELS'		=> false,
+			]);
+
+		$listener = $this->get_listener();
+		$listener->add_page_header_vars();
+	}
+
+	public function test_add_page_header_vars_disabled_early_return()
+	{
+		$this->config['darkmodetoggle_enable'] = 0;
+
+		$this->template->expects($this->once())
+			->method('assign_vars')
+			->with([
+				'S_DARKMODETOGGLE_ENABLED' => false,
 			]);
 
 		$listener = $this->get_listener();
@@ -154,4 +181,3 @@ class listener_test extends \phpbb_test_case
 		$listener->add_page_header_vars();
 	}
 }
-

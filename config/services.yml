@@ -6,3 +6,14 @@ services:
             - '@template'
         tags:
             - { name: event.listener }
+
+    vinny.darkmodetoggle.controller.acp:
+        class: vinny\darkmodetoggle\controller\acp_controller
+        public: true
+        arguments:
+            - '@config'
+            - '@language'
+            - '@log'
+            - '@request'
+            - '@template'
+            - '@user'
